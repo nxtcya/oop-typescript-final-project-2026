@@ -5,7 +5,6 @@ title Appointment Booking System - Class Diagram
 enum ServiceStatus {
   ACTIVE
   INACTIVE
-  MAINTENANCE
 }
 
 enum AppointmentStatus {
