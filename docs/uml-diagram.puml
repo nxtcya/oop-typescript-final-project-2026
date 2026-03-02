@@ -1,0 +1,63 @@
+@startuml
+title Appointment Booking System - Class Diagram
+
+' --- Enums ---
+enum ServiceStatus {
+  ACTIVE
+  INACTIVE
+  MAINTENANCE
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
+}
+
+' --- Classes ---
+class Service {
+  +id: string
+  +code: string
+  +name: string
+  +description: string
+  +durationMinutes: number
+  +price: number
+  +status: ServiceStatus
+  +maxBookingsPerSlot: number
+  +allowWalkIn: boolean
+  +createdAt: Date
+  +updatedAt: Date
+  -- Methods --
+  +updateDetails(data: object): void
+  +toggleStatus(): void
+  +calculateDuration(startTime: Date): Date
+}
+
+class Appointment {
+  +id: string
+  +bookingCode: string
+  +serviceId: string
+  +customerName: string
+  +customerPhone: string
+  +startTime: Date
+  +endTime: Date
+  +status: AppointmentStatus
+  +isPaid: boolean
+  +note: string
+  +createdAt: Date
+  +updatedAt: Date
+  -- Methods --
+  +confirmBooking(): void
+  +cancelBooking(reason: string): void
+  +markAsPaid(): void
+  +reschedule(newTime: Date): boolean
+}
+
+' --- Relationships ---
+Service "1" -- "0..*" Appointment : provides >
+Service ..> ServiceStatus : uses
+Appointment ..> AppointmentStatus : uses
+
+@enduml
