@@ -1,7 +1,7 @@
 @startuml
 title Appointment Booking System - Class Diagram
 
-' --- Enums ---
+
 enum ServiceStatus {
   ACTIVE
   INACTIVE
@@ -16,7 +16,7 @@ enum AppointmentStatus {
   NO_SHOW
 }
 
-' --- Classes ---
+
 class Service {
   +id: string
   +code: string
@@ -29,10 +29,6 @@ class Service {
   +allowWalkIn: boolean
   +createdAt: Date
   +updatedAt: Date
-  -- Methods --
-  +updateDetails(data: object): void
-  +toggleStatus(): void
-  +calculateDuration(startTime: Date): Date
 }
 
 class Appointment {
@@ -40,7 +36,9 @@ class Appointment {
   +bookingCode: string
   +serviceId: string
   +customerName: string
+  +customerAge : number
   +customerPhone: string
+  +customerEmail : string 
   +startTime: Date
   +endTime: Date
   +status: AppointmentStatus
@@ -48,16 +46,10 @@ class Appointment {
   +note: string
   +createdAt: Date
   +updatedAt: Date
-  -- Methods --
-  +confirmBooking(): void
-  +cancelBooking(reason: string): void
-  +markAsPaid(): void
-  +reschedule(newTime: Date): boolean
 }
 
-' --- Relationships ---
-Service "1" -- "0..*" Appointment : provides >
-Service ..> ServiceStatus : uses
-Appointment ..> AppointmentStatus : uses
+Service "1" -- "0..*" Appointment : has
+Service ..> ServiceStatus
+Appointment ..> AppointmentStatus
 
 @enduml
