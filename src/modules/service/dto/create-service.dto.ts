@@ -1,21 +1,45 @@
-import { IsBoolean, IsNumber, IsString, Min } from "class-validator"
+import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator"
+import { serviceStatus } from "../enums/sevice-status.enum";
 
 export class CreateServiceDto { 
     @IsString()
-    code : string = '';
+    @IsNotEmpty()
+    code! : string;
 
     @IsString()
-    name : string = '';
+    @IsNotEmpty()
+    name! : string;
+
+    @IsString()
+    @IsOptional()
+    description?: string ;
+
+    @IsNumber()
+    @Min(1)
+    durationMinutes! : number;
+
+    @IsNumber()
+    @Min(0)
+    minAdvanceBooking! : number;
+
+    @IsNumber()
+    @Min(0)
+    price! : number ;
+
+    @IsString()
+    @IsOptional()
+    currency : string = 'THB';
+
+    @IsEnum(serviceStatus)
+    status! : serviceStatus;
+
+    @IsNumber()
+    @Min(1)
+    maxBookingsPerSlot! : number;
+
+    @IsBoolean()
+    allowWaikIn! : boolean;
+
+    
 }
 
-// id : string;
-//     code : string;
-//     name : string;
-//     description : string;
-//     durationMinutes : number;
-//     price : number;
-//     status : serviceStatus;
-//     maxBookingsPerSlot : number;
-//     allowWalkIn : number;
-//     createdAt : Date;
-//     updateAt : Date;
