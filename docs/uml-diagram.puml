@@ -1,4 +1,4 @@
-@startuml
+@startuml uml-diagram
 title Appointment Booking System - Class Diagram
 
 
@@ -17,12 +17,14 @@ enum AppointmentStatus {
 
 
 class Service {
-  +id: string
+  +id: number
   +code: string
   +name: string
   +description: string
   +durationMinutes: number
+  +minAdvanceBooking : number
   +price: number
+  +currency : string
   +status: ServiceStatus
   +maxBookingsPerSlot: number
   +allowWalkIn: boolean
