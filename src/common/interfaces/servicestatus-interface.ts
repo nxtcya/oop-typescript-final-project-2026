@@ -5,13 +5,15 @@ export interface ServiceEntuty {
     id : string;
     code : string;
     name : string;
-    description : string;
+    description? : string;
     durationMinutes : number;
+    minAdvanceBooking : number;
     price : number;
+    currency : string;
     status : serviceStatus;
     maxBookingsPerSlot : number;
-    allowWalkIn : number;
+    allowWalkIn : boolean;
     createdAt : Date;
-    updateAt : Date;
+    updatedAt : Date;
 
 }
