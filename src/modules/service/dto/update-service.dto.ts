@@ -1,7 +1,7 @@
 import { IsBoolean, IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, Min } from "class-validator"
 import { serviceStatus } from "../enums/sevice-status.enum";
 
-export class CreateServiceDto { 
+export class UpdateServiceDto { 
     @IsString()
     @IsNotEmpty()
     code! : string;

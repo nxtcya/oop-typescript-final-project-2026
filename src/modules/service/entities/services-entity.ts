@@ -1,8 +1,8 @@
-import { serviceStatus } from "@/modules/service/enums/sevice-status.enum";
+import { serviceStatus } from "../enums/sevice-status.enum";
 
 
-export interface ServiceEntuty {
-    id : string;
+export interface ServiceEntity {
+    id : number;
     code : string;
     name : string;
     description? : string;
