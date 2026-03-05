@@ -1,4 +1,4 @@
-# Swagger API Specification
+# 🔌 Swagger API Specification
 
 ## ระบบ Appointment Booking System
 
@@ -10,9 +10,15 @@
 **Appointment List :** http://localhost:3000/appointments
 
 
+## HTTP Status Code
++ `200`  OK
++ `201`  Created
++ `400` Bad Request
++ `404`  Not Found
++ `500` Internal Server Error
 
 
-## Service API
+## 1️⃣ Service API
 ใช้สำหรับจัดการข้อมูลบริการ
 
 
@@ -23,6 +29,10 @@
 
 **Description :** ดึงข้อมูลบริการทั้งหมดในระบบ
 
+**HTTP Status Code :**
+```
+200 OK 
+```
 **Response Example :**
 ```json
 
@@ -41,6 +51,8 @@
 }
 
 ```
+
+
 
 ---
 
@@ -49,27 +61,32 @@
 **Endpoint :** `GET /services/{id}`
 
 **Description :** ดึงข้อมูลบริการ 1 รายการตาม ID
-
-**Response Example :**
-```json
+```url
 GET /services/S1741023456789
 ```
+**HTTP Status Code :**
+```
+200 OK 
+```
+**Response Example :**
 ```json
 
 {
   "success": true,
   "message": "ดึงข้อมูลบริการสำเร็จ",
-  "data": [
-    {
+  "data": {
       "id": "S1741023456789",
       "name": "Hair Cut",
       "description": "บริการตัดผม",
       "durationMinutes": 30,
       "price": 200
-    }
-  ]
+  }
 }
 
+```
+**HTTP Status Code :**
+```
+404 Not Found
 ```
 **Error Example :**
 ```json
@@ -97,21 +114,22 @@ GET /services/S1741023456789
   "price": 500
 }
 ```
-
+**HTTP Status Code :**
+```
+201  Created
+```
 **Response Example :**
 ```json
 {
   "success": true,
   "message": "สร้างบริการใหม่สำเร็จ",
-  "data": [
-    {
+  "data": {
     "id": "S1741029999999",
     "name": "Hair Coloring",
     "description": "บริการทำสีผม",
     "durationMinutes": 60,
     "price": 500
-    }
-  ]
+  }
 }
 ```
 ---
@@ -137,6 +155,11 @@ GET /services/S1741023456789
 
 **Description :** ลบข้อมูลบริการ
 
+**HTTP Status Code :**
+```
+200 OK 
+```
+
 **Response Example :**
 ```json
 {
@@ -149,7 +172,7 @@ GET /services/S1741023456789
 ---
 
 
-## Appointment API
+## 2️⃣ Appointment API
 
 ใช้สำหรับจัดการข้อมูลการจอง
 
@@ -159,6 +182,11 @@ GET /services/S1741023456789
 **Endpoint :** `GET /appointments`
 
 **Description :** ดึงการจองทั้งหมด
+
+**HTTP Status Code :**
+```
+200 OK 
+```
 
 **Response Example :**
 ```json
@@ -184,16 +212,21 @@ GET /services/S1741023456789
 
 **Description :** ดึงข้อมูลการจอง 1 รายการ ตาม ID
 
-**Example :**
-```json
+
+```url
 GET /appointments/A1741030000000
 ```
+**HTTP Status Code :**
+```
+202 OK
+``` 
+
+**Response Example :**
 ```json
 {
   "success": true,
   "message": "ดึงข้อมูลการจองสำเร็จ",
-  "data": [
-    {
+  "data": {
     "id": "A1741030000000",
     "serviceId": "S1741023456789",
     "customerName": "Somchai",
@@ -201,10 +234,12 @@ GET /appointments/A1741030000000
     "appointmentDate": "2026-03-10T10:00:00",
     "status": "PENDING"
     }
-  ]
 }
 ```
-
+**HTTP Status Code :**
+```
+404 Not Found
+``` 
 **Error Example :**
 ```json
 {
@@ -221,6 +256,10 @@ GET /appointments/A1741030000000
 
 **Description :** สร้างการจองใหม่
 
+**HTTP Status Code :**
+```
+201 Created 
+``` 
 **Request Body Example :**
 ```json
 
@@ -246,16 +285,14 @@ GET /appointments/A1741030000000
 {
   "success": true,
   "message": "สร้างการจองใหม่สำเร็จ",
-  "data": [
-    {
+  "data": {
     "id": "A1741031111111",
     "serviceId": "S1741023456789",
     "customerName": "Somchai",
     "customerPhone": "0812345678",
     "appointmentDate": "2026-03-10T10:00:00",
     "status": "PENDING"
-    }
-  ]
+  }
 }
 ```
 ---
@@ -285,6 +322,11 @@ GET /appointments/A1741030000000
 **Endpoint :** `DELETE /appointments/{id}`
 
 **Description :** ลบ/ยกเลิก การจอง
+
+**HTTP Status Code :**
+```
+200 OK 
+```
 
 **Response Example :**
 
