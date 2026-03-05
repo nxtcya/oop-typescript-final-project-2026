@@ -1,28 +1,25 @@
-# NestJS Backend API — Project Template
+# NestJS Backend API — Appointment Booking System 
 
 ## 📌 Project Overview
+โปรเจคนี้เป็น REST API สำหรับระบบ **Appointment Booking System ที่ถูกพัฒนาด้วย NestJS และ TypeScript**
 
-โปรเจคนี้เป็น **Template สำหรับ Class Project** ในรายวิชาการพัฒนา Backend ด้วย NestJS Framework
+---
+**Repository:** [https://github.com/nxtcya/oop-typescript-final-project-2026.git](https://github.com/nxtcya/oop-typescript-final-project-2026.git)
 
-**Repository:** [https://github.com/42bangkok-classroom/oop-typescript-final-project-2026](https://github.com/42bangkok-classroom/oop-typescript-final-project-2026)
 
-วัตถุประสงค์ของโปรเจคนี้คือให้นักศึกษาฝึก:
+ระบบนี้ใช้สำหรับจัดการข้อมูลบริการ (Service) และการนัดหมาย (Appointment) เช่น
 
-* การออกแบบและพัฒนา REST API ตามมาตรฐาน
-* การใช้ TypeScript อย่างปลอดภัย (Type-safe)
-* การจัดการ Validation และ Error Handling
-* การจัดทำเอกสารระบบ (Documentation)
+>+ การสร้างบริการใหม่
+>+ การดูรายการบริการ
+>+ การจองนัดหมาย
+>+ การอัปเดตสถานะการนัดหมาย
+>+ การลบข้อมูลนัดหมาย
+
+API ถูกออกแบบตามหลัก RESTful API และใช้ Standard Response Format เพื่อให้การสื่อสารระหว่าง Client และ Server มีรูปแบบเดียวกัน
+
 
 ---
 
-## 👥 Team Structure
-
-* ทำงานเป็นกลุ่ม กลุ่มละ **3–4 คน**
-* ระยะเวลาการพัฒนา **ประมาณ 2 สัปดาห์**
-* สมาชิกทุกคนต้องมี commit ใน repository
-* รายชื่อสมาชิกต้องถูกระบุไว้ใน `package.json` (key `contributors`)
-
----
 
 ## 🛠 Technology Stack
 
@@ -39,37 +36,59 @@
 
 ```text
 .
-├── src/
-│   ├── main.ts
-│   ├── app.module.ts
-│   │
-│   ├── modules/
-│   │   └── example/
-│   │       └── dto/
-│   │
-│   └── common/
-│       ├── interfaces/
-│       └── utils/
-│
-├── docs/
-│   ├── api-specification.md
-│   ├── data-model.md
-│   └── uml-diagram.png
-├── subjects/
-│   ├── requirement.md
-│   ├── submission.md
-│   ├── evaluation.md
-│   └── models.md
-│
+├── README.md
+├── annoucement.txt
+├── data
+│   ├── appointment.json
+│   └── service.json
+|
+├── docs
+│   ├── api-specification.md
+│   ├── data-model.md
+│   ├── uml-diagram.png
+│   └── uml-diagram.puml
+|
+├── nest-cli.json
+├── package-lock.json
 ├── package.json
-├── tsconfig.json
-└── README.md
+├── src
+│   ├── app.module.ts
+│   ├── app.spec.ts
+│   ├── appointment
+│   │   ├── appointment.controller.ts
+│   │   ├── appointment.service.ts
+│   │   └── dto
+│   │       ├── create-appointment.dto.ts
+│   │       └── update-appointment.dto.ts
+|   |
+│   ├── main.ts
+│   ├── models
+│   │   ├── api-response.interface.ts
+│   │   ├── appointment-status.enum.ts
+│   │   ├── appointment.interface.ts
+│   │   └── service.interface.ts
+|   |
+│   └── service
+│       ├── dto
+│       │   ├── create-service.dto.ts
+│       │   └── update-service.dto.ts
+|       |
+│       ├── service.controller.ts
+│       └── service.service.ts
+|
+├── subjects
+│   ├── evaluation.md
+│   ├── models.md
+│   ├── requirement.md
+│   └── submission.md
+|
+├── test
+│   ├── app.e2e-spec.ts
+│   └── jest-e2e.json
+|
+└── tsconfig.json
 ```
 
-> 📌 หมายเหตุ: 
-> * โครงสร้างอาจมีการปรับเพิ่มเติมได้ตามความเหมาะสม แต่ต้องยังคงความเป็นระเบียบและอ่านง่าย
-> * **แนะนำให้แยก module ตาม models** (เช่น `modules/users/`, `modules/products/`) เพื่อให้โค้ดเป็นระบบและดูแลรักษาง่าย
-> * แต่ละ module ควรมี controller, service, และ dto ของตัวเอง
 
 ---
 
@@ -97,147 +116,82 @@ http://localhost:3000/api
 
 ---
 
-## 🧩 Model Sets
+## 📊 Data Models
 
-แต่ละกลุ่มต้องเลือก **Model Set 1 ชุด** จาก 10 ชุดที่มีให้
+ระบบนี้มี 2 Core Models
 
-**วิธีการเลือก Model Set:**
-1. นำ Student ID ของสมาชิกทุกคนในกลุ่มมารวมกัน (`sumStudentId`)
-2. นำผลรวม mod 10
-3. ค่าที่ได้ (0-9) จะเป็น Model Set ID ที่กลุ่มได้รับ
+### 1. Service
+---
+ใช้เก็บข้อมูลบริการที่สามารถจองได้
 
-**ตัวอย่าง:** 
-- สมาชิก 3 คน มี Student ID: 64123456, 64123457, 64123458
-- `sumStudentId` = 64123456 + 64123457 + 64123458 = 192370371
-- 192370371 mod 10 = 1 → **Model Set ID: "1"** (Blog / Content Platform)
+**ตัวอย่างข้อมูล :**
 
-> 📌 **เมื่อได้ Model Set แล้ว ห้ามเปลี่ยน** เว้นแต่ได้รับอนุญาตจากอาจารย์
 
-**หลังจากเลือก Model Set แล้ว ให้บันทึกใน `package.json`:**
-```json
-{
-  "project": {
-    "model": {
-      "id": "1",
-      "name": "Blog / Content Platform"
-    },
-    "sumStudentId": 192370371
-  }
-}
-```
-
-**รายละเอียด Model Sets ทั้งหมด:** → [`subjects/models.md`](subjects/models.md)
+>+ id
+>+ name
+>+ description
+>+ durationMinutes
+>+ price
+>+ isActive
 
 ---
 
-## 📐 Project Requirements (Summary)
 
-### Data Model
-* ต้องเลือกใช้ **Model Set 1 ชุด** จาก 10 ชุดที่มีให้ (ดูรายละเอียดใน [`subjects/models.md`](subjects/models.md))
-* แต่ละ Model Set มี **Core Data Model 2 Models**
-* ต้องบันทึก Model Set ที่เลือกไว้ใน `package.json` (key `project`)
-* ใช้ TypeScript data type ให้ครบถ้วน
-* ต้องมีการใช้งาน **Enum อย่างน้อย 1 จุด**
-* ❌ **ห้ามใช้ `any` type ในทุกกรณี**
-
-### API Design
-* ทุก Model ต้องรองรับ **CRUD Operation ครบถ้วน**
-* ใช้ HTTP Method ให้ถูกต้องตามหลัก REST API:
-  * `GET /resources` - ดึงข้อมูลทั้งหมด
-  * `GET /resources/{id}` - ดึงข้อมูลตาม ID
-  * `POST /resources` - สร้างข้อมูลใหม่
-  * `PUT /resources/{id}` - อัปเดตข้อมูลทั้งหมด
-  * `PATCH /resources/{id}` - อัปเดตข้อมูลบางส่วน
-  * `DELETE /resources/{id}` - ลบข้อมูล
-* URL path ต้องตั้งชื่อให้สื่อความหมาย
-
-### Standard Response Format
-
-ทุก API ต้องใช้ Response Format แบบเดียวกัน:
-
-```typescript
-interface ApiResponse<T> {
-  success: boolean;
-  message: string;
-  data: T | null;
-}
-```
-
-### Validation & Error Handling
-* ทุก API ต้องมีการ **validate ข้อมูล**
-* ใช้ **HTTP Status Code** ที่เหมาะสม:
-  * `200` - OK (GET, PUT, PATCH สำเร็จ)
-  * `201` - Created (POST สำเร็จ)
-  * `400` - Bad Request (Validation error)
-  * `403` - Forbidden (ไม่มีสิทธิ์)
-  * `404` - Not Found (ไม่พบข้อมูล)
-  * `500` - Internal Server Error (Server error)
-* ⚠️ **ไม่ควรเกิด Error 500 จาก logic ที่สามารถป้องกันได้**
-* หากพบ Error 500 มากกว่า 5 จุด อาจมีผลต่อการให้คะแนน
-
+### 2. Appointment
 ---
 
-## 📄 Documentation
+ใช้เก็บข้อมูลการจองนัดหมาย
 
-เอกสารรายละเอียดของโจทย์และข้อกำหนดทั้งหมดถูกจัดเก็บไว้ในโฟลเดอร์ `subjects/`
+**ตัวอย่างข้อมูล :**
 
-### เอกสารโจทย์ (Project Specification)
+>+  id
+>+ serviceId
+>+ customerName
+>+ appointmentDate
+>+ status
 
-* 📘 **Project Requirement** — ขอบเขตและข้อกำหนดของโปรเจค
-  → [`subjects/requirement.md`](subjects/requirement.md)
-* 🧩 **Model Sets** — รายละเอียด Model Sets ทั้ง 10 ชุด
-  → [`subjects/models.md`](subjects/models.md)
-* 📦 **Submission Guideline** — รูปแบบและขั้นตอนการส่งงาน
-  → [`subjects/submission.md`](subjects/submission.md)
-* 🧮 **Evaluation Criteria** — เกณฑ์การให้คะแนนและการประเมินผล
-  → [`subjects/evaluation.md`](subjects/evaluation.md)
+`status` ของการนัดหมายถูกกำหนดด้วย Enum
 
-### เอกสารทางเทคนิค (ต้องจัดทำ)
-
-* 🔌 **API Specification (Swagger)** — เอกสาร API ทุก Endpoint
-* 🧱 **Data Model Documentation** — เอกสารอธิบาย Data Model
-* 📊 **UML Diagram** — แผนภาพ UML ของ Data Model
-
+**AppointmentStatus**
+>- PENDING
+>- CONFIRMED
+>- CANCELLED
+>- COMPLETED
+---
+### 🔌 API Endpoints
 ---
 
-## 👥 Team & Contributors
+ตัวอย่าง Endpoint หลักของระบบ
 
-รายชื่อสมาชิกในกลุ่มต้องถูกระบุไว้ใน key `contributors` ภายในไฟล์ `package.json` โดยมีรูปแบบดังนี้:
+**Service API**
++ GET /services
++ GET /services/{id}
++ POST /services
++ PUT /services/{id}
++ PATCH /services/{id}
++ DELETE /services/{id}
 
-```json
-"contributors": [
-  {
-    "fullname": "ชื่อ-นามสกุล",
-    "username": "github-username",
-    "studentId": "รหัสนักศึกษา"
-  }
-]
-```
-
+**Appointment API**
++ GET /appointments
++ GET /appointments/{id}
++ POST /appointments
++ PUT /appointments/{id}
++ PATCH /appointments/{id}
++ DELETE /appointments/{id}
 ---
 
-## 🤖 AI Usage Policy
-
-* อนุญาตให้ใช้ AI (เช่น ChatGPT) ช่วยในการพัฒนาโปรเจค
-* นักศึกษาต้องสามารถอธิบายโค้ดและแนวคิดของระบบได้ด้วยตนเอง
-* หากไม่สามารถอธิบายได้ อาจมีผลต่อการประเมินคะแนน
-
+### 📄 Documentation
 ---
+เอกสารของระบบถูกเก็บไว้ในโฟลเดอร์ docs/
 
-## ✅ Submission
+**docs :** [https://github.com/nxtcya/oop-typescript-final-project-2026/tree/main/docs](https://github.com/nxtcya/oop-typescript-final-project-2026/tree/main/docs)
 
-* ส่งงานเป็น **GitHub Repository URL** ในนามของ **Team Lead**
-* Repository ต้องสามารถเข้าถึงได้
+- **API Specification**
+[docs/api-specification.md](https://github.com/nxtcya/oop-typescript-final-project-2026/blob/main/docs/api-specification.md)
 
----
+- **Data Model Documentation**
+[docs/data-model.md](https://github.com/nxtcya/oop-typescript-final-project-2026/blob/main/docs/data-model.md)
 
-## 📝 Important Notes
+- **UML Diagram**
+[docs/uml-diagram.png](https://github.com/nxtcya/oop-typescript-final-project-2026/blob/main/docs/uml-diagram.png)
 
-* โค้ดต้องอ่านง่าย เป็นระบบ และดูแลรักษาได้
-* ทุก request และ response ต้องกำหนด interface แบบ narrow type
-* ใช้ TypeScript strict mode (`strict: true` ใน tsconfig.json)
-* ESLint จะตรวจสอบและป้องกันการใช้ `any` type อัตโนมัติ
-
----
-
-📌 *This repository is intended for educational purposes only.*
