@@ -22,21 +22,21 @@ export class AppointmentController {
   }
 
   @Post()
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) // เพิ่ม { whitelist: true, forbidNonWhitelisted: true } เพื่อกรองข้อมูลที่ไม่ได้กำหนดใน DTO กันการโดน Over-Posting กับ Injection Flaws
   async create(@Body() createDto: CreateAppointmentDto): Promise<ApiResponse<IAppointment>> {
     const data = await this.appointmentService.create(createDto);
     return { success: true, message: 'สร้างการจองใหม่สำเร็จ', data };
   }
 
   @Put(':id')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) // เหตุผลเดียวกัน
   async replace(@Param('id') id: string, @Body() updateDto: UpdateAppointmentDto): Promise<ApiResponse<IAppointment>> {
     const data = await this.appointmentService.update(id, updateDto, true);
     return { success: true, message: 'แทนที่ข้อมูลการจองสำเร็จ', data };
-  }
+  } // ตรง updateDto: UpdateAppointmentDto รู้สึกว่าเปลี่ยนมาใช้ CreateAppointmentDto ดีกว่าเพราะ put คือการแทนที่ทั้งก้อน คือถ้าส่งมาไม่ครบ data เก่าก็จะหาย เลยคิดว่าบังคับรับข้อมูลเป็นแบบ Create เลยจะเซฟกว่า (แต่อันนี้ชั้นยังไม่ได้แก้นะ)
 
   @Patch(':id')
-  @UsePipes(new ValidationPipe())
+  @UsePipes(new ValidationPipe({ whitelist: true, forbidNonWhitelisted: true })) // เหมือนเดิม
   async update(@Param('id') id: string, @Body() updateDto: UpdateAppointmentDto): Promise<ApiResponse<IAppointment>> {
     const data = await this.appointmentService.update(id, updateDto, false);
     return { success: true, message: 'อัปเดตข้อมูลการจองสำเร็จ', data };

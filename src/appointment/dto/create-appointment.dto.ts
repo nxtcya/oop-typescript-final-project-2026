@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsISO8601, IsOptional } from 'class-validator';
+import { IsString, IsNotEmpty, IsISO8601, IsOptional, MaxLength } from 'class-validator';
 
 export class CreateAppointmentDto {
   @IsString()
@@ -7,6 +7,7 @@ export class CreateAppointmentDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100) // จำกัดความยาว กันคนสแปม data base พัง
   customerName!: string;
 
   @IsString()
@@ -15,9 +16,10 @@ export class CreateAppointmentDto {
 
   @IsISO8601()
   @IsNotEmpty()
-  appointmentDate!: string; 
+  appointmentDate!: string;
 
   @IsOptional()
   @IsString()
+  @MaxLength(500) // จำกัดความยาว กันคนสแปม data base พัง
   notes?: string;
 }

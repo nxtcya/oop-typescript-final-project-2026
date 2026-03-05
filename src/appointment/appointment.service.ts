@@ -25,7 +25,7 @@ export class AppointmentService {
 
   private async writeData(data: IAppointment[]): Promise<void> {
     await fs.writeFile(this.filePath, JSON.stringify(data, null, 2), 'utf-8');
-  }
+  } // ชั้นว่าอันนี้ควรมีการเช็คและสร้างโฟลเดอร์ให้ชัวร์ก่อนสั่งเขียนไฟล์นะ เผื่อเครื่องที่เค้าไปรันไม่มี folder data (ซึ่งในเคสนี้มีอยู่แล้ว แค่คิดว่ากันไว้ก็ดี ชั้นยังไม่ได้เขียน)
 
   async findAll(): Promise<IAppointment[]> {
     return await this.readData();
@@ -60,10 +60,17 @@ export class AppointmentService {
     return newAppointment;
   }
 
-  async update(id: string, dto: UpdateAppointmentDto, isReplace: boolean): Promise<IAppointment> {
-    const appointments = await this.readData();
+  async update(id: string, dto: UpdateAppointmentDto | CreateAppointmentDto, isReplace: boolean): Promise<IAppointment> {
+    const appointments = await this.readData(); // เหมือนเดิมถ้าใช้ put มาควรรับข้อมูลเป็น Create
     const index = appointments.findIndex(a => a.id === id);
     if (index === -1) throw new NotFoundException(`ไม่พบข้อมูลการจองรหัส ${id}`);
+    
+    if (dto.appointmentDate) {
+      const appointmentDate = new Date(dto.appointmentDate);
+      if (appointmentDate < new Date()) {
+        throw new BadRequestException('วันที่และเวลาที่จองต้องไม่เป็นอดีต');
+      }
+    } //ให้เช็คเวลาเฉพาะตอนที่มีคนส่งวันเวลามาให้อัปเดตเท่านั้น ถ้าไม่มีส่งมาก็ข้ามไปเลย (กันคนมา patch ข้อมูลทีหลัง)
 
     if (dto.serviceId) {
       await this.serviceService.findOne(dto.serviceId);
@@ -73,7 +80,7 @@ export class AppointmentService {
       const currentStatus = appointments[index].status;
       appointments[index] = { 
         id, 
-        serviceId: dto.serviceId!,
+        serviceId: dto.serviceId!, //อันนี้ชั้นว่าควรแก้การประกาศนะ สมมติถ้าใช้ put แล้ว user ดันส่งข้อมูลมาไม่ครบ datd อันอื่นจะเป็น undefined หมดเลยนะชั้นว่า
         customerName: dto.customerName!,
         customerPhone: dto.customerPhone!,
         appointmentDate: dto.appointmentDate!,
