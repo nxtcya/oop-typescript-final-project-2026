@@ -1,56 +1,88 @@
 @startuml uml-diagram
 title Appointment Booking System - Class Diagram
 
-
-enum ServiceStatus {
-  ACTIVE
-  INACTIVE
-}
+package "Model Layer" {
 
 enum AppointmentStatus {
   PENDING
   CONFIRMED
   CANCELLED
   COMPLETED
-  NO_SHOW
 }
 
 
-class Service {
-  +id: number
-  +code: string
+class ApiResponse<T> {
+  +success: boolean
+  +message: string
+  +data: T | null
+} 
+
+class IService {
+  +id: string
   +name: string
   +description: string
   +durationMinutes: number
-  +minAdvanceBooking : number
   +price: number
-  +currency : string
-  +status: ServiceStatus
-  +maxBookingsPerSlot: number
-  +allowWalkIn: boolean
-  +createdAt: Date
-  +updatedAt: Date
+  +isActive: boolean
 }
 
-class Appointment {
+
+class IAppointment {
   +id: string
-  +bookingCode: string
   +serviceId: string
   +customerName: string
-  +customerAge : number
   +customerPhone: string
-  +customerEmail : string 
-  +startTime: Date
-  +endTime: Date
+  +appointmentDate: string
   +status: AppointmentStatus
-  +isPaid: boolean
-  +note: string
-  +createdAt: Date
-  +updatedAt: Date
+  +notes? : string
+}
 }
 
-Service "1" -- "0..*" Appointment : has
-Service ..> ServiceStatus
-Appointment ..> AppointmentStatus
+package "Controller Layer" {
+class ServiceController {
+  +findAll()
+  +findOne(id)
+  +create(dto)
+  +replace(id, dto)
+  +update(id, dto)
+  +remove(id)
+}
+
+class AppointmentController {
+  +findAll()
+  +findOne(id)
+  +create(dto)
+  +replace(id, dto)
+  +update(id, dto)
+  +remove(id)
+}
+}
+
+package "Service Layer" {
+class ServiceService {
+  +findAll()
+  +findOne(id)
+  +create(dto)
+  +update(id, dto)
+  +remove(id)
+}
+
+class AppointmentService {
+  +findAll()
+  +findOne(id)
+  +create(dto)
+  +update(id, dto)
+  +remove(id)
+}
+}
+
+
+IService "1" -- "0..*" IAppointment : has
+IAppointment --> AppointmentStatus
+
+ServiceController --> ServiceService : usa
+AppointmentController --> AppointmentService : usa
+
+AppointmentService --> ServiceService : validate service
 
 @enduml
