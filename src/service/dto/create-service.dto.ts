@@ -19,4 +19,15 @@ export class CreateServiceDto {
 
   @IsBoolean()
   isActive!: boolean;
+
+  @IsBoolean()
+  requiresAdvancePayment!: boolean;
+
+  @IsNumber()
+  @Min(1)
+  maxCapacity!: number;
+
+  @IsString()
+  @IsNotEmpty()
+  category!: string;
 }

@@ -1,4 +1,4 @@
-import { IsString, IsISO8601, IsOptional, IsEnum } from 'class-validator';
+import { IsString, IsISO8601, IsOptional, IsEnum, IsBoolean } from 'class-validator';
 import { AppointmentStatus } from '../../models/appointment-status.enum';
 
 export class UpdateAppointmentDto {
@@ -25,4 +25,12 @@ export class UpdateAppointmentDto {
   @IsOptional()
   @IsString()
   notes?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isFirstTimeCustomer!: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  isReminderSent?: boolean;
 }

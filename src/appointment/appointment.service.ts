@@ -6,12 +6,14 @@ import { AppointmentStatus } from '../models/appointment-status.enum';
 import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { ServiceService } from '../service/service.service';
+import { IService } from '@/models/service.interface';
+import { CreateServiceDto } from '@/service/dto/create-service.dto';
 
 @Injectable()
 export class AppointmentService {
   private readonly filePath = path.join(process.cwd(), 'data', 'appointments.json');
+  
 
-  // Inject ServiceService เพื่อใช้ตรวจสอบบริการที่มีอยู่
   constructor(private readonly serviceService: ServiceService) {}
 
   private async readData(): Promise<IAppointment[]> {
@@ -38,25 +40,27 @@ export class AppointmentService {
     return appointment;
   }
 
-  async create(dto: CreateAppointmentDto): Promise<IAppointment> {
-    await this.serviceService.findOne(dto.serviceId);
-    const appointmentDate = new Date(dto.appointmentDate);
-    if (appointmentDate < new Date()) {
-      throw new BadRequestException('วันที่และเวลาที่จองต้องไม่เป็นอดีต');
-    }
-
-    const appointments = await this.readData();
-    const newId = `A${Date.now()}`;
+  async create(dto: CreateServiceDto): Promise<IAppointment> {
+    const services = await this.readData();
+    const newId = `svc-${Date.now()}`; 
+    const now = new Date().toISOString(); 
 
     const newAppointment: IAppointment = {
       id: newId,
       ...dto,
-      status: AppointmentStatus.PENDING, 
+      createdAt: now,
+      updatedAt: now,
+      serviceId: '',
+      customerName: '',
+      customerPhone: '',
+      appointmentDate: '',
+      status: AppointmentStatus.PENDING,
+      isFirstTimeCustomer: false,
+      isReminderSent: false
     };
     
-    appointments.push(newAppointment);
-    await this.writeData(appointments);
-    
+    services.push(newAppointment);
+    await this.writeData(services);
     return newAppointment;
   }
 

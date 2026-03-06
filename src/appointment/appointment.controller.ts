@@ -4,10 +4,12 @@ import { CreateAppointmentDto } from './dto/create-appointment.dto';
 import { UpdateAppointmentDto } from './dto/update-appointment.dto';
 import { IAppointment } from '../models/appointment.interface';
 import { ApiResponse } from '../models/api-response.interface';
+import { CreateServiceDto } from '@/service/dto/create-service.dto';
 
 @Controller('appointments')
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
+
 
   @Get()
   async findAll(): Promise<ApiResponse<IAppointment[]>> {
@@ -23,9 +25,9 @@ export class AppointmentController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  async create(@Body() createDto: CreateAppointmentDto): Promise<ApiResponse<IAppointment>> {
-    const data = await this.appointmentService.create(createDto);
-    return { success: true, message: 'สร้างการจองใหม่สำเร็จ', data };
+  async create(@Body() createDto: CreateServiceDto): Promise<ApiResponse<IAppointment>> {
+  const data = await this.appointmentService.create(createDto);
+  return { success: true, message: 'สร้างการจองใหม่สำเร็จ', data };
   }
 
   @Put(':id')

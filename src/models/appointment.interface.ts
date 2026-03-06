@@ -5,7 +5,11 @@ export interface IAppointment {
   serviceId: string;
   customerName: string;
   customerPhone: string;
-  appointmentDate: string; 
+  appointmentDate: string;
   status: AppointmentStatus;
   notes?: string;
+  isFirstTimeCustomer: boolean; 
+  isReminderSent: boolean;      
+  createdAt: string;            
+  updatedAt: string;            
 }

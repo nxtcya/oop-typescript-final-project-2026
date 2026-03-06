@@ -36,9 +36,16 @@ export class ServiceService {
 
   async create(dto: CreateServiceDto): Promise<IService> {
     const services = await this.readData();
-    const newId = `S${Date.now()}`; 
+    const newId = `svc-${Date.now()}`; 
+    const now = new Date().toISOString();
 
-    const newService: IService = { id: newId, ...dto };
+    const newService: IService = { 
+      id: newId, 
+      ...dto,
+      category: dto.category as any,
+      createdAt: now,
+      updatedAt: now,
+    };
     services.push(newService);
     await this.writeData(services);
     
@@ -48,14 +55,14 @@ export class ServiceService {
   async update(id: string, dto: UpdateServiceDto, isReplace: boolean): Promise<IService> {
     const services = await this.readData();
     const index = services.findIndex(s => s.id === id);
-    if (index === -1) throw new NotFoundException(`ไม่พบบริการรหัส ${id}`);
-
+    const now = new Date().toISOString();
     if (isReplace) {
-      
-      services[index] = { id, ...dto } as IService;
+     
+      const createdAt = services[index].createdAt;
+      services[index] = { id, ...dto, createdAt, updatedAt: now } as IService;
     } else {
       
-      services[index] = { ...services[index], ...dto };
+      services[index] = { ...services[index], ...dto, updatedAt: now } as IService;
     }
 
     await this.writeData(services);
