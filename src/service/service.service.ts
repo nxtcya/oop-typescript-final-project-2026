@@ -9,7 +9,17 @@ import { UpdateServiceDto } from './dto/update-service.dto';
 export class ServiceService {
   private readonly filePath = path.join(process.cwd(), 'data', 'services.json');
 
+  private async ensureFileExists(): Promise<void> {
+    try {
+      await fs.access(this.filePath);
+    } catch {
+      await fs.mkdir
+      await fs.writeFile(this.filePath, '[]', 'utf-8');
+    }
+  }
+
   private async readData(): Promise<IService[]> {
+    await this.ensureFileExists();
     try {
       const data = await fs.readFile(this.filePath, 'utf-8');
       return JSON.parse(data) as IService[];

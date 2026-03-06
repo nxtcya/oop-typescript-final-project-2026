@@ -13,10 +13,19 @@ import { CreateServiceDto } from '@/service/dto/create-service.dto';
 export class AppointmentService {
   private readonly filePath = path.join(process.cwd(), 'data', 'appointments.json');
   
+  private async ensureFileExists(): Promise<void> {
+    try {
+      await fs.access(this.filePath);
+    } catch {
+      await fs.mkdir(path.dirname(this.filePath), { recursive: true });
+      await fs.writeFile(this.filePath, '[]', 'utf-8');
+    }
+  }
 
   constructor(private readonly serviceService: ServiceService) {}
 
   private async readData(): Promise<IAppointment[]> {
+    await this.ensureFileExists();
     try {
       const data = await fs.readFile(this.filePath, 'utf-8');
       return JSON.parse(data) as IAppointment[];
@@ -40,27 +49,45 @@ export class AppointmentService {
     return appointment;
   }
 
-  async create(dto: CreateServiceDto): Promise<IAppointment> {
-    const services = await this.readData();
-    const newId = `svc-${Date.now()}`; 
-    const now = new Date().toISOString(); 
+  async create(dto: CreateAppointmentDto): Promise<IAppointment> {
+    const service = await this.serviceService.findOne(dto.serviceId);
+   if (!service.isActive) {
+      throw new BadRequestException('ขออภัย บริการนี้ปิดให้บริการชั่วคราว');
+    }
+
+    const appointmentDate = new Date(dto.appointmentDate);
+    if (appointmentDate < new Date()) {
+      throw new BadRequestException('วันที่และเวลาที่จองต้องไม่เป็นอดีต');
+    }
+
+    const appointments = await this.readData();
+
+    const overlappingAppointments = appointments.filter(
+      (a) => 
+        a.serviceId === dto.serviceId &&
+        a.appointmentDate === dto.appointmentDate &&
+        (a.status === AppointmentStatus.PENDING || a.status === AppointmentStatus.CONFIRMED)
+    );
+
+    if (overlappingAppointments.length >= service.maxCapacity) {
+      throw new BadRequestException(`คิวเต็มแล้ว! บริการนี้รับได้สูงสุด ${service.maxCapacity} คิวต่อรอบเวลา`);
+    }
+
+    const newId = `appt-${Date.now()}`;
+    const now = new Date().toISOString();
 
     const newAppointment: IAppointment = {
       id: newId,
       ...dto,
       createdAt: now,
       updatedAt: now,
-      serviceId: '',
-      customerName: '',
-      customerPhone: '',
-      appointmentDate: '',
       status: AppointmentStatus.PENDING,
       isFirstTimeCustomer: false,
       isReminderSent: false
     };
     
-    services.push(newAppointment);
-    await this.writeData(services);
+    appointments.push(newAppointment);
+    await this.writeData(appointments);
     return newAppointment;
   }
 

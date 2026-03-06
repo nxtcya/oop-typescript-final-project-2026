@@ -25,7 +25,7 @@ export class AppointmentController {
 
   @Post()
   @UsePipes(new ValidationPipe())
-  async create(@Body() createDto: CreateServiceDto): Promise<ApiResponse<IAppointment>> {
+  async create(@Body() createDto: CreateAppointmentDto): Promise<ApiResponse<IAppointment>> {
   const data = await this.appointmentService.create(createDto);
   return { success: true, message: 'สร้างการจองใหม่สำเร็จ', data };
   }
