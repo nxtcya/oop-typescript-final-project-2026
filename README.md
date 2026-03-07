@@ -66,6 +66,7 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 │   │   ├── api-response.interface.ts
 │   │   ├── appointment-status.enum.ts
 │   │   ├── appointment.interface.ts
+│   │   ├── service-category.enum.ts
 │   │   └── service.interface.ts
 |   |
 │   └── service

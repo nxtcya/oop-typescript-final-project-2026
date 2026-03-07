@@ -100,7 +100,7 @@ export class AppointmentService {
     });
   }
 
-  async update(id: string, dto: UpdateAppointmentDto, isReplace: boolean): Promise<IAppointment> {
+  async update(id: string, dto: UpdateAppointmentDto | CreateAppointmentDto, isReplace: boolean): Promise<IAppointment> {
     return this.runWithLock(async () => {
       const appointments = await this.readData();
       const index = appointments.findIndex(a => a.id === id);
@@ -142,16 +142,17 @@ export class AppointmentService {
       }
 
       if (isReplace) {
+        const createDto = dto as CreateAppointmentDto;
         appointments[index] = { 
           id: id, 
-          serviceId: dto.serviceId!,
-          customerName: dto.customerName!,
-          customerPhone: dto.customerPhone!,
-          appointmentDate: dto.appointmentDate!,
-          notes: dto.notes,
-          isFirstTimeCustomer: dto.isFirstTimeCustomer!,
-          isReminderSent: dto.isReminderSent ?? oldAppointment.isReminderSent,
-          status: dto.status ?? oldAppointment.status,
+          serviceId: createDto.serviceId,
+          customerName: createDto.customerName,
+          customerPhone: createDto.customerPhone,
+          appointmentDate: createDto.appointmentDate,
+          notes: createDto.notes,
+          isFirstTimeCustomer: createDto.isFirstTimeCustomer,
+          isReminderSent: createDto.isReminderSent ?? oldAppointment.isReminderSent,
+          status: oldAppointment.status,
           createdAt: oldAppointment.createdAt,
           updatedAt: now
         };

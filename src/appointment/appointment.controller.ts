@@ -35,7 +35,7 @@ export class AppointmentController {
   @Put(':id')
   @ApiOperation({ summary: 'แทนที่ข้อมูลการจอง (Replace)' })
   async replace(@Param('id') id: string, @Body() replaceDto: CreateAppointmentDto): Promise<ApiResponse<IAppointment>> {
-    const data = await this.appointmentService.update(id, replaceDto as UpdateAppointmentDto, true);
+    const data = await this.appointmentService.update(id, replaceDto, true);
     return { success: true, message: 'แทนที่ข้อมูลการจองสำเร็จ', data };
   }
 

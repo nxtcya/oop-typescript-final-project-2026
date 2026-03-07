@@ -218,7 +218,7 @@ GET /appointments/A1741030000000
 ```
 **HTTP Status Code :**
 ```
-202 OK
+200 OK
 ``` 
 
 **Response Example :**
