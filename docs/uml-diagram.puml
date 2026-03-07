@@ -10,6 +10,13 @@ enum AppointmentStatus {
   COMPLETED
 }
 
+enum ServiceCategory {
+  HAIR_CARE
+  SKIN_CARE
+  MASSAGE 
+  CONSULTATION 
+}
+
 
 class ApiResponse<T> {
   +success: boolean
@@ -17,24 +24,33 @@ class ApiResponse<T> {
   +data: T | null
 } 
 
-class IService {
+interface IService {
   +id: string
   +name: string
   +description: string
   +durationMinutes: number
   +price: number
   +isActive: boolean
+  +requiresAdvancePayment: boolean
+  +maxCapacity: number
+  +category: ServiceCategory
+  +createdAt: string
+  +updatedAt: string
 }
 
 
-class IAppointment {
+interface IAppointment {
   +id: string
   +serviceId: string
   +customerName: string
   +customerPhone: string
   +appointmentDate: string
   +status: AppointmentStatus
-  +notes? : string
+  +notes?: string
+  +isFirstTimeCustomer: boolean
+  +isReminderSent: boolean    
+  +createdAt: string        
+  +updatedAt: string 
 }
 }
 
@@ -79,9 +95,9 @@ class AppointmentService {
 
 IService "1" -- "0..*" IAppointment : has
 IAppointment --> AppointmentStatus
-
-ServiceController --> ServiceService : usa
-AppointmentController --> AppointmentService : usa
+IService --> ServiceCategory
+ServiceController --> ServiceService : uses
+AppointmentController --> AppointmentService : uses
 
 AppointmentService --> ServiceService : validate service
 
