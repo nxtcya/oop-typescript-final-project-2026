@@ -2,7 +2,7 @@
   "name": "nestjs-backend-api",
   "version": "1.0.0",
   "description": "NestJS Backend API for Appointment Booking System",
-  "author": "OOP Fianl Project",
+  "author": "OOP-Final-Project-2026",
   "private": true,
   "license": "MIT",
   "contributors": [
@@ -18,13 +18,13 @@
     },
     {
       "fullname": "จิรพัชร ดิษยบุตร",
-      "username": "๋JDlnwza007",
+      "username": "JDlnwza007",
       "studentId": "68010147"
     }
   ],
   "project": {
     "model": {
-      "id": 6,
+      "id": "6",
       "name": "Appointment Booking System"
     },
     "sumStudentId": 204031086
@@ -88,6 +88,9 @@
       "**/*.(t|j)s"
     ],
     "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/$1"
+    }
   }
 }
