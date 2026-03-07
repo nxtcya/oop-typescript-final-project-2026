@@ -10,8 +10,8 @@ import { AppointmentStatus } from '../models/appointment-status.enum';
 
 @Injectable()
 export class ServiceService {
-  private readonly filePath = path.join(process.cwd(), 'data', 'services.json');
-  private readonly appointmentsPath = path.join(process.cwd(), 'data', 'appointments.json'); 
+  private readonly filePath = path.join(process.cwd(), 'data', 'service.json');
+  private readonly appointmentsPath = path.join(process.cwd(), 'data', 'appointment.json'); 
   
   private mutex = Promise.resolve();
 
