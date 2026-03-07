@@ -111,10 +111,10 @@ export class AppointmentService {
 
       const targetServiceId = dto.serviceId ?? oldAppointment.serviceId;
       const targetDate = dto.appointmentDate ?? oldAppointment.appointmentDate;
-      const targetStatus = dto.status ?? oldAppointment.status;
+      const targetStatus = (dto as UpdateAppointmentDto).status ?? oldAppointment.status;
 
-      if (dto.serviceId || dto.appointmentDate || dto.status) {
-        const service = await this.serviceService.findOne(targetServiceId);
+      if (dto.serviceId || dto.appointmentDate || (dto as UpdateAppointmentDto).status) {
+          const service = await this.serviceService.findOne(targetServiceId);
         
         if (dto.serviceId && !service.isActive) {
           throw new BadRequestException('ขออภัย บริการนี้ปิดให้บริการชั่วคราว');
