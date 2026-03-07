@@ -82,7 +82,7 @@ export class AppointmentService {
       createdAt: now,
       updatedAt: now,
       status: AppointmentStatus.PENDING,
-      isFirstTimeCustomer: false,
+      isFirstTimeCustomer: dto.isFirstTimeCustomer,
       isReminderSent: false
     };
     
@@ -96,13 +96,43 @@ export class AppointmentService {
     const index = appointments.findIndex(a => a.id === id);
     if (index === -1) throw new NotFoundException(`ไม่พบข้อมูลการจองรหัส ${id}`);
 
-    if (dto.serviceId) {
-      await this.serviceService.findOne(dto.serviceId);
+    const oldAppointment = appointments[index];
+    const now = new Date().toISOString();
+
+    const targetServiceId = dto.serviceId ?? oldAppointment.serviceId;
+    const targetDate = dto.appointmentDate ?? oldAppointment.appointmentDate;
+    const targetStatus = dto.status ?? oldAppointment.status;
+
+    if (dto.serviceId || dto.appointmentDate || dto.status) {
+      const service = await this.serviceService.findOne(targetServiceId);
+      
+      
+      if (dto.serviceId && !service.isActive) {
+        throw new BadRequestException('ขออภัย บริการนี้ปิดให้บริการชั่วคราว');
+      }
+
+      
+      if (dto.appointmentDate && new Date(targetDate) < new Date()) {
+        throw new BadRequestException('วันที่และเวลาที่จองต้องไม่เป็นอดีต');
+      }
+
+      
+      if (targetStatus === AppointmentStatus.PENDING || targetStatus === AppointmentStatus.CONFIRMED) {
+        const overlappingAppointments = appointments.filter(
+          (a) => 
+            a.id !== id && 
+            a.serviceId === targetServiceId &&
+            a.appointmentDate === targetDate &&
+            (a.status === AppointmentStatus.PENDING || a.status === AppointmentStatus.CONFIRMED)
+        );
+
+        if (overlappingAppointments.length >= service.maxCapacity) {
+          throw new BadRequestException(`คิวเต็มแล้ว! บริการนี้รับได้สูงสุด ${service.maxCapacity} คิวต่อรอบเวลา`);
+        }
+      }
     }
 
-    const now = new Date().toISOString();
-    const oldAppointment = appointments[index];
-
+    
     if (isReplace) {
       appointments[index] = { 
         id: id, 
