@@ -1,4 +1,5 @@
-import { IsString, IsNumber, IsBoolean, Min, IsOptional, IsNotEmpty } from 'class-validator';
+import { ServiceCategory } from '@/models/service-category.enum';
+import { IsString, IsNumber, IsBoolean, Min, IsOptional, IsNotEmpty, IsEnum } from 'class-validator';
 
 export class UpdateServiceDto {
   @IsOptional()
@@ -31,9 +32,8 @@ export class UpdateServiceDto {
   @IsNumber()
   @Min(1)
   maxCapacity!: number;
-  
+
   @IsOptional()
-  @IsString()
-  @IsNotEmpty()
-  category!: string;
+  @IsEnum(ServiceCategory)
+  category?: ServiceCategory;
 }

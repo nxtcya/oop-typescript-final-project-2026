@@ -1,4 +1,5 @@
-import { IsString, IsNotEmpty, IsNumber, IsBoolean, Min } from 'class-validator';
+import { ServiceCategory } from '@/models/service-category.enum';
+import { IsString, IsNotEmpty, IsNumber, IsBoolean, Min, IsEnum } from 'class-validator';
 
 export class CreateServiceDto {
   @IsString()
@@ -27,7 +28,7 @@ export class CreateServiceDto {
   @Min(1)
   maxCapacity!: number;
 
-  @IsString()
+  @IsEnum(ServiceCategory, { message: 'หมวดหมู่บริการไม่ถูกต้อง' })
   @IsNotEmpty()
-  category!: string;
+  category!: ServiceCategory;
 }

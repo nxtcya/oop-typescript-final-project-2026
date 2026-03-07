@@ -10,7 +10,6 @@ import { CreateServiceDto } from '@/service/dto/create-service.dto';
 export class AppointmentController {
   constructor(private readonly appointmentService: AppointmentService) {}
 
-
   @Get()
   async findAll(): Promise<ApiResponse<IAppointment[]>> {
     const data = await this.appointmentService.findAll();
@@ -26,14 +25,14 @@ export class AppointmentController {
   @Post()
   @UsePipes(new ValidationPipe())
   async create(@Body() createDto: CreateAppointmentDto): Promise<ApiResponse<IAppointment>> {
-  const data = await this.appointmentService.create(createDto);
-  return { success: true, message: 'สร้างการจองใหม่สำเร็จ', data };
+    const data = await this.appointmentService.create(createDto);
+    return { success: true, message: 'สร้างการจองใหม่สำเร็จ', data };
   }
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  async replace(@Param('id') id: string, @Body() updateDto: UpdateAppointmentDto): Promise<ApiResponse<IAppointment>> {
-    const data = await this.appointmentService.update(id, updateDto, true);
+  async replace(@Param('id') id: string, @Body() replaceDto: CreateAppointmentDto): Promise<ApiResponse<IAppointment>> {
+    const data = await this.appointmentService.update(id, replaceDto as UpdateAppointmentDto, true);
     return { success: true, message: 'แทนที่ข้อมูลการจองสำเร็จ', data };
   }
 

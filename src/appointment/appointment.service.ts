@@ -100,19 +100,29 @@ export class AppointmentService {
       await this.serviceService.findOne(dto.serviceId);
     }
 
+    const now = new Date().toISOString();
+    const oldAppointment = appointments[index];
+
     if (isReplace) {
-      const currentStatus = appointments[index].status;
       appointments[index] = { 
-        id, 
+        id: id, 
         serviceId: dto.serviceId!,
         customerName: dto.customerName!,
         customerPhone: dto.customerPhone!,
         appointmentDate: dto.appointmentDate!,
-        status: dto.status ?? currentStatus,
-        notes: dto.notes
-      } as IAppointment;
+        notes: dto.notes,
+        isFirstTimeCustomer: dto.isFirstTimeCustomer!,
+        isReminderSent: dto.isReminderSent ?? oldAppointment.isReminderSent,
+        status: dto.status ?? oldAppointment.status,
+        createdAt: oldAppointment.createdAt,
+        updatedAt: now
+      };
     } else {
-      appointments[index] = { ...appointments[index], ...dto };
+      appointments[index] = { 
+        ...oldAppointment, 
+        ...dto, 
+        updatedAt: now
+      };
     }
 
     await this.writeData(appointments);

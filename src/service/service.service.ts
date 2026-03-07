@@ -13,7 +13,7 @@ export class ServiceService {
     try {
       await fs.access(this.filePath);
     } catch {
-      await fs.mkdir
+      await fs.mkdir(path.dirname(this.filePath), { recursive: true });
       await fs.writeFile(this.filePath, '[]', 'utf-8');
     }
   }
@@ -27,7 +27,6 @@ export class ServiceService {
       return []; 
     }
   }
-
   
   private async writeData(data: IService[]): Promise<void> {
     await fs.writeFile(this.filePath, JSON.stringify(data, null, 2), 'utf-8');
@@ -65,14 +64,31 @@ export class ServiceService {
   async update(id: string, dto: UpdateServiceDto, isReplace: boolean): Promise<IService> {
     const services = await this.readData();
     const index = services.findIndex(s => s.id === id);
+    if (index === -1) {
+      throw new NotFoundException(`ไม่พบข้อมูลบริการรหัส ${id}`);
+    }
     const now = new Date().toISOString();
+    const oldService = services[index];
     if (isReplace) {
-     
-      const createdAt = services[index].createdAt;
-      services[index] = { id, ...dto, createdAt, updatedAt: now } as IService;
+     services[index] = { 
+        id: id, 
+        name: dto.name!,
+        description: dto.description!,
+        durationMinutes: dto.durationMinutes!,
+        price: dto.price!,
+        isActive: dto.isActive!,
+        requiresAdvancePayment: dto.requiresAdvancePayment!,
+        maxCapacity: dto.maxCapacity!,
+        category: dto.category!,
+        createdAt: oldService.createdAt,
+        updatedAt: now
+      };
     } else {
-      
-      services[index] = { ...services[index], ...dto, updatedAt: now } as IService;
+      services[index] = { 
+        ...oldService, 
+        ...dto, 
+        updatedAt: now
+      };
     }
 
     await this.writeData(services);

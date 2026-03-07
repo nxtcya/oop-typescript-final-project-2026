@@ -30,8 +30,8 @@ export class ServiceController {
 
   @Put(':id')
   @UsePipes(new ValidationPipe())
-  async replace(@Param('id') id: string, @Body() updateDto: UpdateServiceDto): Promise<ApiResponse<IService>> {
-    const data = await this.serviceService.update(id, updateDto, true);
+  async replace(@Param('id') id: string, @Body() replaceDto: CreateServiceDto): Promise<ApiResponse<IService>> {
+    const data = await this.serviceService.update(id, replaceDto as UpdateServiceDto, true);
     return { success: true, message: 'แทนที่ข้อมูลบริการสำเร็จ', data };
   }
 
