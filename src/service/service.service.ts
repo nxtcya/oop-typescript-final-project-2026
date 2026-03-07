@@ -51,9 +51,10 @@ export class ServiceService {
     const newService: IService = { 
       id: newId, 
       ...dto,
-      category: dto.category as any,
+      isActive: dto.isActive ?? true, 
+      requiresAdvancePayment: dto.requiresAdvancePayment ?? false,
       createdAt: now,
-      updatedAt: now,
+      updatedAt: now
     };
     services.push(newService);
     await this.writeData(services);
