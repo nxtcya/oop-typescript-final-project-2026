@@ -1,0 +1,346 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "NestJS Backend API",
+    "description": "API Documentation for NestJS Backend Project",
+    "version": "1.0",
+    "contact": {}
+  },
+  "servers": [],
+  "tags": [
+    {
+      "name": "api",
+      "description": ""
+    }
+  ],
+  "paths": {
+    "/services": {
+      "get": {
+        "operationId": "ServiceController_findAll",
+        "summary": "ดึงข้อมูลบริการทั้งหมด",
+        "tags": ["Services"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+      "post": {
+        "operationId": "ServiceController_create",
+        "summary": "สร้างบริการใหม่",
+        "tags": ["Services"],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateServiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        }
+      }
+    },
+
+    "/services/{id}": {
+      "get": {
+        "operationId": "ServiceController_findOne",
+        "summary": "ดึงข้อมูลบริการด้วย ID",
+        "tags": ["Services"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+
+      "put": {
+        "operationId": "ServiceController_replace",
+        "summary": "แทนที่ข้อมูลบริการ (Replace)",
+        "tags": ["Services"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateServiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+
+      "patch": {
+        "operationId": "ServiceController_update",
+        "summary": "อัปเดตข้อมูลบริการบางส่วน (Patch)",
+        "tags": ["Services"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateServiceDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+
+      "delete": {
+        "operationId": "ServiceController_remove",
+        "summary": "ลบข้อมูลบริการ",
+        "tags": ["Services"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+
+    "/appointments": {
+      "get": {
+        "operationId": "AppointmentController_findAll",
+        "summary": "ดึงข้อมูลการจองทั้งหมด",
+        "tags": ["Appointments"],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+
+      "post": {
+        "operationId": "AppointmentController_create",
+        "summary": "สร้างการจองใหม่",
+        "tags": ["Appointments"],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAppointmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        }
+      }
+    },
+
+    "/appointments/{id}": {
+      "get": {
+        "operationId": "AppointmentController_findOne",
+        "summary": "ดึงข้อมูลการจองด้วย ID",
+        "tags": ["Appointments"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+
+      "put": {
+        "operationId": "AppointmentController_replace",
+        "summary": "แทนที่ข้อมูลการจอง (Replace)",
+        "tags": ["Appointments"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAppointmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+
+      "patch": {
+        "operationId": "AppointmentController_update",
+        "summary": "อัปเดตข้อมูลการจองบางส่วน (Patch)",
+        "tags": ["Appointments"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAppointmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      },
+
+      "delete": {
+        "operationId": "AppointmentController_remove",
+        "summary": "ยกเลิกการจอง",
+        "tags": ["Appointments"],
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    }
+  },
+
+  "components": {
+    "schemas": {
+
+      "CreateServiceDto": {
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "durationMinutes",
+          "price",
+          "isActive",
+          "requiresAdvancePayment",
+          "maxCapacity",
+          "category"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "ชื่อบริการ",
+            "example": "นวดแผนไทย"
+          },
+          "description": {
+            "type": "string",
+            "description": "รายละเอียดบริการ",
+            "example": "นวดผ่อนคลาย 60 นาที"
+          },
+          "durationMinutes": {
+            "type": "number",
+            "description": "ระยะเวลา (นาที)",
+            "example": 60
+          },
+          "price": {
+            "type": "number",
+            "description": "ราคา",
+            "example": 500
+          },
+          "isActive": {
+            "type": "boolean",
+            "description": "เปิดให้บริการหรือไม่",
+            "example": true
+          },
+          "requiresAdvancePayment": {
+            "type": "boolean",
+            "description": "ต้องจ่ายเงินล่วงหน้าหรือไม่",
+            "example": false
+          },
+          "maxCapacity": {
+            "type": "number",
+            "description": "รับลูกค้าได้สูงสุดต่อรอบ",
+            "example": 2
+          },
+          "category": {
+            "type": "string",
+            "enum": ["HAIR_CARE", "SKIN_CARE", "MASSAGE", "CONSULTATION"],
+            "description": "หมวดหมู่บริการ"
+          }
+        }
+      }
+
+    }
+  }
+}
