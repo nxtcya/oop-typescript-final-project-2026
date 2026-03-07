@@ -94,9 +94,9 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 
 **ก่อนรันโปรเจค จำเป็นต้องติดตั้ง**
 
-+ **Node.js** 
++ Node.js
 
-+ **npm**
++ npm
 
 **ตรวจสอบเวอร์ชันได้ด้วยคำสั่ง**
 ```
@@ -147,7 +147,6 @@ http://localhost:3000/api
 + **Appointment** - การนัดหมาย
 
 ### 1️⃣ Service
----
 
 ใช้เก็บข้อมูลบริการที่ลูกค้าสามารถจองได้
 
@@ -178,7 +177,6 @@ Value| Description |
 `CONSULTATION `|บริการให้คำปรึกษา|
 
 ### 2️⃣ Appointment
----
 
 ใช้เก็บข้อมูลการจองบริการของลูกค้า
 
@@ -251,6 +249,7 @@ Status | Description |
 }
 
 ```
+---
 ## ⚠️ Error Handling
 
 ตัวอย่าง Error Response
@@ -267,6 +266,7 @@ Status | Description |
 + `400`  Bad Request
 + `404`  Not Found
 + `500`  Internal Server Error
+---
 
 ## 📄 Documentation
 ---
