@@ -28,6 +28,7 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 * **API Style:** REST API
 * **Database:** JSON-based (file-based หรือ in-memory)
 * **API Documentation:** Swagger (OpenAPI)
+* **Testing:** Jest + Supertest (Unit Test / E2E Test)
 * **Linting:** ESLint (TypeScript ESLint)
 
 ---
@@ -120,8 +121,11 @@ npm install
 ```bash
 npm run start:dev
 ```
-
-### 4. API Documentation (Swagger)
+### 4. Run Test
+```
+npm run test:e2e -- --detectLeaks
+```
+### 5. API Documentation (Swagger)
 
 เมื่อรันโปรเจคแล้ว สามารถเข้าดู Swagger ได้ที่:
 
@@ -139,7 +143,7 @@ http://localhost:3000/api
 ## 📊 Data Models
 
 ### ระบบนี้มี 2 Core Models
-+ **service** - บริการ
++ **Service** - บริการ
 + **Appointment** - การนัดหมาย
 
 ### 1️⃣ Service
@@ -149,27 +153,29 @@ http://localhost:3000/api
 
 Field|Description|
 |----|-----------|
-`id`| 	รหัสบริการ
-`name` | ชื่อบริการ
-`description` |	รายละเอียดของบริการ
-`durationMinutes`| ระยะเวลาของบริการ (นาที)
-`price` |  ราคาของบริการ 
-`isActive`| สถานะว่าบริการเปิดใช้งานหรือไม่
-`requiresAdvancePayment`| บริการนี้ต้องชำระเงินล่วงหน้าหรือไม่
-`maxCapacity`|จำนวนลูกค้าสูงสุดที่สามารถรับได้ต่อช่วงเวลา
-`category` | ประเภทของบริการ 
-`createdAt`|  วันที่และเวลาที่สร้างข้อมูลบริการ (ISO Date)
-`updatedAt` |  วันที่และเวลาที่มีการแก้ไขข้อมูลล่าสุด (ISO Date)
-`category`  ของประเภทบริการ ถูกกำหนดด้วย Enum
+`id`| 	รหัสบริการ |
+`name` | ชื่อบริการ |
+`description` |	รายละเอียดของบริการ |
+`durationMinutes`| ระยะเวลาของบริการ (นาที) |
+`price` |  ราคาของบริการ |
+`isActive`| สถานะว่าบริการเปิดใช้งานหรือไม่ |
+`requiresAdvancePayment`| บริการนี้ต้องชำระเงินล่วงหน้าหรือไม่ |
+`maxCapacity`|จำนวนลูกค้าสูงสุดที่สามารถรับได้ต่อช่วงเวลา |
+`category` | ประเภทของบริการ  |
+`createdAt`|  วันที่และเวลาที่สร้างข้อมูลบริการ (ISO Date) |
+`updatedAt` |  วันที่และเวลาที่มีการแก้ไขข้อมูลล่าสุด (ISO Date) |
+
+
+`category` ของบริการถูกกำหนดด้วย Enum
 
 **ServiceCategory**
 
 Value| Description |
 |------|--------|
-`HAIR_CARE` |บริการเกี่ยวกับเส้นผม
-`SKIN_CARE` |บริการดูแลผิวหน้า
-`MASSAGE` |บริการนวด
-`CONSULTATION `|บริการให้คำปรึกษา
+`HAIR_CARE` |บริการเกี่ยวกับเส้นผม |
+`SKIN_CARE` |บริการดูแลผิวหน้า | 
+`MASSAGE` |บริการนวด |
+`CONSULTATION `|บริการให้คำปรึกษา|
 
 ### 2️⃣ Appointment
 ---
@@ -178,17 +184,17 @@ Value| Description |
 
 Field |	Description
 |-----|----------|
-|`id`| รหัสการจอง
-|`serviceId` |	รหัสบริการที่ลูกค้าเลือก
-|`customerName`|  ชื่อลูกค้า
-|`customerPhone` |  เบอร์โทรศัพท์ของลูกค้า
-|`appointmentDate`|วันและเวลาที่จอง
-|`status` |  สถานะของการจอง
-|`notes?`| 	 หมายเหตุเพิ่มเติม
-|`isFirstTimeCustomer`| ลูกค้าเป็นลูกค้าใหม่หรือไม่
-|`isReminderSent`|  มีการส่งการแจ้งเตือนการจองแล้วหรือยัง
-|`createdAt`|วันที่และเวลาที่สร้างข้อมูลการจอง (ISO Date)
-|`updatedAt`|วันที่และเวลาที่มีการแก้ไขข้อมูลล่าสุด (ISO Date)
+|`id`| รหัสการจอง |
+|`serviceId` |	รหัสบริการที่ลูกค้าเลือก |
+|`customerName`|  ชื่อลูกค้า |
+|`customerPhone` |  เบอร์โทรศัพท์ของลูกค้า |
+|`appointmentDate`|วันและเวลาที่จอง |
+|`status` |  สถานะของการจอง |
+|`notes?`| 	 หมายเหตุเพิ่มเติม |
+|`isFirstTimeCustomer`| ลูกค้าเป็นลูกค้าใหม่หรือไม่ |
+|`isReminderSent`|  มีการส่งการแจ้งเตือนการจองแล้วหรือยัง |
+|`createdAt`|วันที่และเวลาที่สร้างข้อมูลการจอง (ISO Date) |
+|`updatedAt`|วันที่และเวลาที่มีการแก้ไขข้อมูลล่าสุด (ISO Date) |
 
 
 `status` ของการนัดหมายถูกกำหนดด้วย Enum
@@ -196,10 +202,10 @@ Field |	Description
 **AppointmentStatus**
 Status | Description |
 |------|--------|
-|`PENDING`	| การจองถูกสร้างและกำลังรอการยืนยัน
-|`CONFIRMED` |	การจองได้รับการยืนยันแล้ว
-|`COMPLETED` |	การให้บริการเสร็จสิ้นแล้ว
-|`CANCELLED` |	การจองถูกยกเลิก
+|`PENDING`	| การจองถูกสร้างและกำลังรอการยืนยัน |
+|`CONFIRMED` |	การจองได้รับการยืนยันแล้ว |
+|`COMPLETED` |	การให้บริการเสร็จสิ้นแล้ว |
+|`CANCELLED` |	การจองถูกยกเลิก |
 ---
 ## 🔌 API Endpoints
 
@@ -283,6 +289,6 @@ Status | Description |
 ## 👨‍💻 Contributors
 StudentId| Name |
 |---|-----|
-| 68010147 | จิรพัชร ดิษยบุตร
-| 68010331 | ณัฐชยา ทับโนนทอง 
-| 68010608 | นิธิมา สุเนตร 
+| 68010147 | จิรพัชร ดิษยบุตร |
+| 68010331 | ณัฐชยา ทับโนนทอง |
+| 68010608 | นิธิมา สุเนตร |
