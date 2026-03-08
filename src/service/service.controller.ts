@@ -35,10 +35,10 @@ export class ServiceController {
   @Put(':id')
   @ApiOperation({ summary: 'แทนที่ข้อมูลบริการ (Replace)' })
   async replace(@Param('id') id: string, @Body() replaceDto: CreateServiceDto): Promise<ApiResponse<IService>> {
-    const data = await this.serviceService.update(id, replaceDto as UpdateServiceDto, true);
+    const data = await this.serviceService.update(id, replaceDto, true);
     return { success: true, message: 'แทนที่ข้อมูลบริการสำเร็จ', data };
   }
-
+  
   @Patch(':id')
   @ApiOperation({ summary: 'อัปเดตข้อมูลบริการบางส่วน (Patch)' })
   async update(@Param('id') id: string, @Body() updateDto: UpdateServiceDto): Promise<ApiResponse<IService>> {

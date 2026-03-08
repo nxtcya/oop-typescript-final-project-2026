@@ -76,7 +76,7 @@ export class ServiceService {
     });
   }
 
-  async update(id: string, dto: UpdateServiceDto, isReplace: boolean): Promise<IService> {
+  async update(id: string, dto: UpdateServiceDto | CreateServiceDto, isReplace: boolean): Promise<IService> {
     return this.runWithLock(async () => {
       const services = await this.readData();
       const index = services.findIndex(s => s.id === id);
@@ -85,17 +85,19 @@ export class ServiceService {
       }
       const now = new Date().toISOString();
       const oldService = services[index];
+
       if (isReplace) {
+        const createDto = dto as CreateServiceDto;
         services[index] = { 
           id: id, 
-          name: dto.name!,
-          description: dto.description!,
-          durationMinutes: dto.durationMinutes!,
-          price: dto.price!,
-          isActive: dto.isActive!,
-          requiresAdvancePayment: dto.requiresAdvancePayment!,
-          maxCapacity: dto.maxCapacity!,
-          category: dto.category!,
+          name: createDto.name,
+          description: createDto.description,
+          durationMinutes: createDto.durationMinutes,
+          price: createDto.price,
+          isActive: createDto.isActive,
+          requiresAdvancePayment: createDto.requiresAdvancePayment,
+          maxCapacity: createDto.maxCapacity,
+          category: createDto.category,
           createdAt: oldService.createdAt,
           updatedAt: now
         };
