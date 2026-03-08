@@ -39,23 +39,9 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 .
 ├── README.md
 ├── annoucement.txt
-├── coverage
-│   ├── clover.xml
-│   ├── coverage-final.json
-│   ├── lcov-report
-│   │   ├── base.css
-│   │   ├── block-navigation.js
-│   │   ├── favicon.png
-│   │   ├── index.html
-│   │   ├── prettify.css
-│   │   ├── prettify.js
-│   │   ├── sort-arrow-sprite.png
-│   │   ├── sorter.js
-│   │   └── src
-│   └── lcov.info
 ├── data
-│   ├── appointment.json
-│   └── service.json
+│   ├── appointments.json
+│   └── services.json
 ├── docs
 │   ├── api-specification.md
 │   ├── data-model.md
@@ -73,6 +59,8 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 │   │   ├── appointment.service.spec.ts
 │   │   ├── appointment.service.ts
 │   │   └── dto
+│   │       ├── create-appointment.dto.ts
+│   │       └── update-appointment.dto.ts
 │   ├── main.ts
 │   ├── models
 │   │   ├── api-response.interface.ts
@@ -82,6 +70,8 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 │   │   └── service.interface.ts
 │   └── service
 │       ├── dto
+│       │   ├── create-service.dto.ts
+│       │   └── update-service.dto.ts
 │       ├── service.controller.ts
 │       ├── service.service.spec.ts
 │       └── service.service.ts
