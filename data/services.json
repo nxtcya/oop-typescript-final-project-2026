@@ -154,18 +154,5 @@
     "category": "CONSULTATION",
     "createdAt": "2026-03-01T09:00:00Z",
     "updatedAt": "2026-03-01T09:00:00Z"
-  },
-  {
-    "id": "svc-fc5ffed7-6920-4de1-b83c-8377059f64ce",
-    "name": "นวดอโรม่าแบบใหม่",
-    "description": "ปรับปรุงข้อมูล",
-    "durationMinutes": 90,
-    "price": 1200,
-    "isActive": true,
-    "requiresAdvancePayment": true,
-    "maxCapacity": 1,
-    "category": "MASSAGE",
-    "createdAt": "2026-03-08T07:22:11.909Z",
-    "updatedAt": "2026-03-08T07:22:12.067Z"
   }
 ]
