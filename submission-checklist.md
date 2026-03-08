@@ -1,7 +1,7 @@
-# Submission Checklist ✅❌
+# Submission Checklist ✅
 
 
-## Team & Contributor
+## 👨‍💻 Team & Contributor
 - [x] Repository ต้องสามารถเข้าถึงได้
 - [x] สมาชิกทุกคนมี commit ใน repository
 - [x] สมาชิกทุกคนต้องถูกระบุไว้ใน key `contributors` ภายในไฟล์ `package.json`
