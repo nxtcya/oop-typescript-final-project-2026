@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ServiceService } from '../src/service/service.service';
+import { ServiceService } from './service.service';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 import * as fs from 'fs/promises';
-import { ServiceCategory } from '../src/models/service-category.enum';
+import { ServiceCategory } from '../models/service-category.enum';
 jest.mock('fs/promises');
 
 

@@ -1,11 +1,11 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AppointmentService } from '../src/appointment/appointment.service';
-import { ServiceService } from '../src/service/service.service';
+import { AppointmentService } from './appointment.service';
+import { ServiceService } from '../service/service.service';
 import { NotFoundException, BadRequestException } from '@nestjs/common';
 import * as fs from 'fs/promises';
-import { AppointmentStatus } from '../src/models/appointment-status.enum';
-import { IService } from '../src/models/service.interface';
-import { IAppointment } from '../src/models/appointment.interface';
+import { AppointmentStatus } from '../models/appointment-status.enum';
+import { IService } from '../models/service.interface';
+import { IAppointment } from '../models/appointment.interface';
 
 jest.mock('fs/promises');
 
