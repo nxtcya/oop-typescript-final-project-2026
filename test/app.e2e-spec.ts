@@ -157,17 +157,20 @@ describe('Appointment Booking API (e2e) - Full Coverage', () => {
     });
 
     it('/appointments/:id (PUT) - ควรแทนที่ข้อมูลการจองได้ (เปลี่ยนชื่อ)', async () => {
+      const updateDate = new Date();
+      updateDate.setDate(updateDate.getDate() + 2);
+
       const res: Response = await request(app.getHttpServer())
         .put(`/appointments/${createdApptId}`)
         .send({
           serviceId: createdServiceId,
           customerName: 'ณัฐชยา (เปลี่ยนชื่อ)',
           customerPhone: '0899999999',
-          appointmentDate: testDateIso,
-          isFirstTimeCustomer: false, 
-          status: 'PENDING'
+          appointmentDate: updateDate.toISOString(),
+          isFirstTimeCustomer: false 
         })
-        .expect(200);
+        .expect(200); 
+        
       expect(res.body.data.customerName).toContain('เปลี่ยนชื่อ');
     });
 
