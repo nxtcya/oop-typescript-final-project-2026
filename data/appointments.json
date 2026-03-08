@@ -248,5 +248,17 @@
     "isReminderSent": true,
     "createdAt": "2026-03-20T08:20:00Z",
     "updatedAt": "2026-03-24T15:30:00Z"
+  },
+  {
+    "id": "appt-0c0c9e5c-5992-4afa-a5bf-5db75459df16",
+    "serviceId": "svc-fc5ffed7-6920-4de1-b83c-8377059f64ce",
+    "customerName": "คนที่สอง พยายามแย่งคิว",
+    "customerPhone": "0811112222",
+    "appointmentDate": "2026-03-09T07:22:06.022Z",
+    "isFirstTimeCustomer": true,
+    "createdAt": "2026-03-08T07:22:12.043Z",
+    "updatedAt": "2026-03-08T07:22:12.043Z",
+    "status": "PENDING",
+    "isReminderSent": false
   }
 ]

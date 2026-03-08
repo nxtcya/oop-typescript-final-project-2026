@@ -166,7 +166,7 @@ describe('Appointment Booking API (e2e) - Full Coverage', () => {
           serviceId: createdServiceId,
           customerName: 'ณัฐชยา (เปลี่ยนชื่อ)',
           customerPhone: '0899999999',
-          appointmentDate: updateDate.toISOString(),
+          appointmentDate: testDateIso,
           isFirstTimeCustomer: false 
         })
         .expect(200); 
