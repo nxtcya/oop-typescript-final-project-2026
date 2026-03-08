@@ -28,8 +28,10 @@ describe('Appointments API (e2e)', () => {
         isActive: true,
         requiresAdvancePayment: false,
         maxCapacity: 5,
-        category: 'OTHERS',
-      });
+        category: 'MASSAGE', 
+      })
+      .expect(201); 
+
     testServiceId = serviceRes.body.data.id;
   });
 
