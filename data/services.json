@@ -154,5 +154,20 @@
     "category": "CONSULTATION",
     "createdAt": "2026-03-01T09:00:00Z",
     "updatedAt": "2026-03-01T09:00:00Z"
+  },
+  {
+    "id": "svc-e3fa038f-114a-4045-b878-6e505535dceb",
+    "name": "นวดแผนไทย E2E",
+    "description": "เทสระบบ",
+    "durationMinutes": 60,
+    "price": 500,
+    "isActive": true,
+    "requiresAdvancePayment": false,
+    "maxCapacity": 2,
+    "category": "MASSAGE",
+    "createdAt": "2026-03-08T07:02:13.102Z",
+    "updatedAt": "2026-03-08T07:02:13.102Z"
+  }
+]datedAt": "2026-03-08T07:02:13.103Z"
   }
 ]

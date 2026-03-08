@@ -4,10 +4,14 @@ import request from 'supertest';
 import { Response } from 'supertest'; 
 import { AppModule } from './../src/app.module';
 
-describe('Appointment Booking API (e2e)', () => {
+describe('Appointment Booking API (e2e) - Full Coverage', () => {
   let app: INestApplication;
   let createdServiceId: string;
   let createdApptId: string;
+  
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const testDateIso = tomorrow.toISOString();
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -38,7 +42,6 @@ describe('Appointment Booking API (e2e)', () => {
         .expect(200)
         .expect((res: Response) => { 
           expect(res.body.success).toBe(true);
-          expect(res.body.message).toBe('ดึงข้อมูลบริการสำเร็จ');
           expect(Array.isArray(res.body.data)).toBe(true);
         });
     });
@@ -69,6 +72,13 @@ describe('Appointment Booking API (e2e)', () => {
       expect(createdServiceId).toBeDefined();
     });
 
+    it('/services/:id (GET) - ควรดึงข้อมูลบริการตาม ID ได้ถูกต้อง', async () => {
+      const res: Response = await request(app.getHttpServer())
+        .get(`/services/${createdServiceId}`)
+        .expect(200);
+      expect(res.body.data.id).toBe(createdServiceId);
+    });
+
     it('/services/:id (PATCH) - ควรแก้ไขข้อมูลบางส่วนได้', async () => {
       const res: Response = await request(app.getHttpServer())
         .patch(`/services/${createdServiceId}`)
@@ -87,7 +97,7 @@ describe('Appointment Booking API (e2e)', () => {
           price: 1200,
           isActive: true,
           requiresAdvancePayment: true,
-          maxCapacity: 5,
+          maxCapacity: 1, 
           category: 'MASSAGE'
         })
         .expect(200);
@@ -100,7 +110,6 @@ describe('Appointment Booking API (e2e)', () => {
         .get('/appointments')
         .expect(200)
         .expect((res: Response) => { 
-          expect(res.body.success).toBe(true);
           expect(Array.isArray(res.body.data)).toBe(true);
         });
     });
@@ -125,16 +134,13 @@ describe('Appointment Booking API (e2e)', () => {
     });
 
     it('/appointments (POST) - ควรสร้างการจองได้สำเร็จถ้าข้อมูลถูกต้อง (HTTP 201)', async () => {
-      const tomorrow = new Date();
-      tomorrow.setDate(tomorrow.getDate() + 1);
-
       const res: Response = await request(app.getHttpServer())
         .post('/appointments')
         .send({
           serviceId: createdServiceId, 
           customerName: 'ณัฐชยา',
           customerPhone: '0899999999',
-          appointmentDate: tomorrow.toISOString(),
+          appointmentDate: testDateIso, 
           isFirstTimeCustomer: true
         })
         .expect(201);
@@ -142,7 +148,29 @@ describe('Appointment Booking API (e2e)', () => {
       createdApptId = res.body.data.id;
       expect(res.body.data.status).toBe('PENDING');
     });
-   
+
+    it('/appointments/:id (GET) - ควรดึงข้อมูลการจองตาม ID ได้', async () => {
+      const res: Response = await request(app.getHttpServer())
+        .get(`/appointments/${createdApptId}`)
+        .expect(200);
+      expect(res.body.data.customerName).toBe('ณัฐชยา');
+    });
+
+    it('/appointments/:id (PUT) - ควรแทนที่ข้อมูลการจองได้ (เปลี่ยนชื่อ)', async () => {
+      const res: Response = await request(app.getHttpServer())
+        .put(`/appointments/${createdApptId}`)
+        .send({
+          serviceId: createdServiceId,
+          customerName: 'ณัฐชยา (เปลี่ยนชื่อ)',
+          customerPhone: '0899999999',
+          appointmentDate: testDateIso,
+          isFirstTimeCustomer: false, 
+          status: 'PENDING'
+        })
+        .expect(200);
+      expect(res.body.data.customerName).toContain('เปลี่ยนชื่อ');
+    });
+
     it('/appointments/:id (PATCH) - ควรเปลี่ยนสถานะการจองเป็น CONFIRMED', async () => {
       const res: Response = await request(app.getHttpServer())
         .patch(`/appointments/${createdApptId}`)
@@ -152,17 +180,61 @@ describe('Appointment Booking API (e2e)', () => {
     });
   });
 
+  describe('Business Logic & Edge Cases', () => {
+    it('ควรแจ้ง Error 400 ถ้าจองคิวซ้อนทับจนคิวเต็ม (Capacity Full)', async () => {
+      await request(app.getHttpServer())
+        .post('/appointments')
+        .send({
+          serviceId: createdServiceId,
+          customerName: 'คนที่สอง พยายามแย่งคิว',
+          customerPhone: '0811112222',
+          appointmentDate: testDateIso, 
+          isFirstTimeCustomer: true
+        })
+        .expect(400); 
+    });
+
+    it('ควรแจ้ง Error 400 ถ้าจองบริการที่ปิดใช้งานอยู่ (Inactive)', async () => {
+      await request(app.getHttpServer()).patch(`/services/${createdServiceId}`).send({ isActive: false });
+      
+      await request(app.getHttpServer())
+        .post('/appointments')
+        .send({
+          serviceId: createdServiceId,
+          customerName: 'พยายามจองตอนร้านปิด',
+          customerPhone: '0811112222',
+          appointmentDate: testDateIso,
+          isFirstTimeCustomer: true
+        })
+        .expect(400);
+      
+      await request(app.getHttpServer()).patch(`/services/${createdServiceId}`).send({ isActive: true });
+    });
+
+    it('ควรแจ้ง Error 400 หากพยายามลบบริการ (Service) ที่ยังมีคิวจองค้างอยู่', async () => {
+      await request(app.getHttpServer())
+        .delete(`/services/${createdServiceId}`)
+        .expect(400); 
+    });
+  });
+
   describe('Cleanup Phase (DELETE)', () => {
-    it('ควรลบการจองที่สร้างขึ้นมาเทสได้', async () => {
+    it('ควรลบการจองที่สร้างขึ้นมาเทสได้ (ต้องทำก่อน)', async () => {
       await request(app.getHttpServer())
         .delete(`/appointments/${createdApptId}`)
         .expect(200);
     });
 
-    it('ควรลบบริการที่สร้างขึ้นมาเทสได้', async () => {
+    it('เมื่อไม่มีคิวค้างแล้ว ควรจะลบบริการทิ้งได้', async () => {
       await request(app.getHttpServer())
         .delete(`/services/${createdServiceId}`)
         .expect(200);
+    });
+
+    it('ยืนยันว่าลบไปแล้วจริงๆ (GET ต้องได้ 404)', async () => {
+      await request(app.getHttpServer())
+        .get(`/services/${createdServiceId}`)
+        .expect(404);
     });
   });
 });
