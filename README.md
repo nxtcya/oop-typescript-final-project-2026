@@ -39,17 +39,29 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 .
 ├── README.md
 ├── annoucement.txt
+├── coverage
+│   ├── clover.xml
+│   ├── coverage-final.json
+│   ├── lcov-report
+│   │   ├── base.css
+│   │   ├── block-navigation.js
+│   │   ├── favicon.png
+│   │   ├── index.html
+│   │   ├── prettify.css
+│   │   ├── prettify.js
+│   │   ├── sort-arrow-sprite.png
+│   │   ├── sorter.js
+│   │   └── src
+│   └── lcov.info
 ├── data
 │   ├── appointment.json
 │   └── service.json
-|
 ├── docs
 │   ├── api-specification.md
 │   ├── data-model.md
 │   ├── swagger.json
 │   ├── uml-diagram.png
 │   └── uml-diagram.puml
-|
 ├── nest-cli.json
 ├── package-lock.json
 ├── package.json
@@ -58,9 +70,9 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 │   ├── app.spec.ts
 │   ├── appointment
 │   │   ├── appointment.controller.ts
+│   │   ├── appointment.service.spec.ts
 │   │   ├── appointment.service.ts
 │   │   └── dto
-|   |   
 │   ├── main.ts
 │   ├── models
 │   │   ├── api-response.interface.ts
@@ -68,18 +80,16 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 │   │   ├── appointment.interface.ts
 │   │   ├── service-category.enum.ts
 │   │   └── service.interface.ts
-|   |
 │   └── service
 │       ├── dto
 │       ├── service.controller.ts
+│       ├── service.service.spec.ts
 │       └── service.service.ts
-|
 ├── subjects
 │   ├── evaluation.md
 │   ├── models.md
 │   ├── requirement.md
 │   └── submission.md
-|
 ├── submission-checklist.md
 ├── test
 │   ├── app.e2e-spec.ts
@@ -121,11 +131,8 @@ npm install
 ```bash
 npm run start:dev
 ```
-### 4. Run Test
-```
-npm run test:e2e -- --detectLeaks
-```
-### 5. API Documentation (Swagger)
+
+### 4. API Documentation (Swagger)
 
 เมื่อรันโปรเจคแล้ว สามารถเข้าดู Swagger ได้ที่:
 
@@ -138,6 +145,24 @@ http://localhost:3000/api
 + ทดลองยิง API ได้ทันที
 + Request / Response schema
 + ดู API documentation แบบ interactive
+---
+## ✨ Features
+
++ RESTful API Design
+
++ Standardized API Response Format
+
++ JSON File-based Data Storage
+
++ Concurrency Control using Mutex Lock
+
++ DTO Validation
+
++ Swagger API Documentation
+
++ Unit Testing
+
++ End-to-End Testing
 ---
 
 ## 📊 Data Models
@@ -165,7 +190,7 @@ Field|Description|
 `updatedAt` |  วันที่และเวลาที่มีการแก้ไขข้อมูลล่าสุด (ISO Date) |
 
 
-`category` ของบริการถูกกำหนดด้วย Enum
++ `category` ของบริการถูกกำหนดด้วย Enum
 
 **ServiceCategory**
 
@@ -195,7 +220,7 @@ Field |	Description
 |`updatedAt`|วันที่และเวลาที่มีการแก้ไขข้อมูลล่าสุด (ISO Date) |
 
 
-`status` ของการนัดหมายถูกกำหนดด้วย Enum
++ `status` ของการนัดหมายถูกกำหนดด้วย Enum
 
 **AppointmentStatus**
 Status | Description |
@@ -267,9 +292,30 @@ Status | Description |
 + `404`  Not Found
 + `500`  Internal Server Error
 ---
+## 🧪 Testing
+
+โปรเจคนี้ใช้ Jest และ Supertest สำหรับการทดสอบ
+
+**Run Unit Test :**
+```
+npm run test
+```
+**Run E2E Test :**
+```
+npm run test:e2e -- --detectLeaks
+```
+**Test Coverage :**
+```
+npm run test:cov
+```
++ ผลลัพธ์ coverage จะถูกเก็บใน
+    ```
+    coverage/
+    ```
+
+---
 
 ## 📄 Documentation
----
 เอกสารของระบบถูกเก็บไว้ในโฟลเดอร์ docs/
 
 **docs :** [https://github.com/nxtcya/oop-typescript-final-project-2026/tree/main/docs](https://github.com/nxtcya/oop-typescript-final-project-2026/tree/main/docs)
