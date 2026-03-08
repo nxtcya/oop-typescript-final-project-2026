@@ -248,5 +248,17 @@
     "isReminderSent": true,
     "createdAt": "2026-03-20T08:20:00Z",
     "updatedAt": "2026-03-24T15:30:00Z"
+  },
+  {
+    "id": "appt-53e142b0-e9da-4448-b1c1-5ff8ac98c500",
+    "serviceId": "svc-2dc0dbf7-1aa5-468e-af96-4bcfd8741661",
+    "customerName": "สมหญิง",
+    "customerPhone": "0899999999",
+    "appointmentDate": "2026-03-09T03:28:36.904Z",
+    "isFirstTimeCustomer": true,
+    "createdAt": "2026-03-08T03:28:36.937Z",
+    "updatedAt": "2026-03-08T03:28:36.937Z",
+    "status": "PENDING",
+    "isReminderSent": false
   }
 ]
