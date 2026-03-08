@@ -10,7 +10,7 @@ import { ServiceService } from '../service/service.service';
 
 @Injectable()
 export class AppointmentService {
-  private readonly filePath = path.join(process.cwd(), 'data', 'appointment.json');
+  private readonly filePath = path.join(process.cwd(), 'data', 'appointments.json');
   
   private mutex = Promise.resolve();
 

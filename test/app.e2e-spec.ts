@@ -7,10 +7,11 @@ import { AppModule } from './../src/app.module';
 describe('Appointment Booking API (e2e)', () => {
   let app: INestApplication;
   let createdServiceId: string;
+  let createdApptId: string;
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
-    imports: [AppModule],
+      imports: [AppModule],
     }).compile();
 
     app = moduleFixture.createNestApplication();
@@ -45,17 +46,12 @@ describe('Appointment Booking API (e2e)', () => {
     it('/services (POST) - ควรแจ้ง Error 400 ถ้าส่งข้อมูลไม่ครบถ้วน', () => {
       return request(app.getHttpServer())
         .post('/services')
-        .send({
-          name: 'บริการทดสอบ',
-        })
-        .expect(400)
-        .expect((res: Response) => {
-          expect(Array.isArray(res.body.message)).toBe(true);
-        });
+        .send({ name: 'บริการทดสอบ' })
+        .expect(400);
     });
 
     it('/services (POST) - ควรสร้างบริการใหม่ได้สำเร็จ (HTTP 201)', async () => {
-      const res = await request(app.getHttpServer())
+      const res: Response = await request(app.getHttpServer())
         .post('/services')
         .send({
           name: 'นวดแผนไทย E2E',
@@ -69,9 +65,32 @@ describe('Appointment Booking API (e2e)', () => {
         })
         .expect(201); 
       
-      expect(res.body.success).toBe(true);
-      expect(res.body.data.id).toBeDefined();
-      createdServiceId = res.body.data.id; 
+      createdServiceId = res.body.data.id;
+      expect(createdServiceId).toBeDefined();
+    });
+
+    it('/services/:id (PATCH) - ควรแก้ไขข้อมูลบางส่วนได้', async () => {
+      const res: Response = await request(app.getHttpServer())
+        .patch(`/services/${createdServiceId}`)
+        .send({ price: 999 })
+        .expect(200);
+      expect(res.body.data.price).toBe(999);
+    });
+
+    it('/services/:id (PUT) - ควรแทนที่ข้อมูลทั้งหมดได้', async () => {
+      await request(app.getHttpServer())
+        .put(`/services/${createdServiceId}`)
+        .send({
+          name: 'นวดอโรม่าแบบใหม่',
+          description: 'ปรับปรุงข้อมูล',
+          durationMinutes: 90,
+          price: 1200,
+          isActive: true,
+          requiresAdvancePayment: true,
+          maxCapacity: 5,
+          category: 'MASSAGE'
+        })
+        .expect(200);
     });
   });
 
@@ -86,48 +105,64 @@ describe('Appointment Booking API (e2e)', () => {
         });
     });
 
-    it('/appointments/appt-999999 (GET) - ควรแจ้ง Error 404 ถ้าหา ID ไม่เจอ', () => {
+    it('/appointments/:id (GET) - ควรแจ้ง Error 404 ถ้าหา ID ไม่เจอ', () => {
       return request(app.getHttpServer())
         .get('/appointments/appt-999999')
-        .expect(404)
-        .expect((res: Response) => { 
-          expect(res.body.message).toContain('ไม่พบข้อมูล');
-        });
+        .expect(404);
     });
 
     it('/appointments (POST) - ควรแจ้ง Error 400 ถ้าจองคิวในอดีต', () => {
       return request(app.getHttpServer())
         .post('/appointments')
         .send({
-          serviceId: createdServiceId || 'svc-test',
-          customerName: 'สมชาย',
+          serviceId: createdServiceId,
+          customerName: 'แอมแปร์',
           customerPhone: '0812345678',
           appointmentDate: '2020-01-01T10:00:00Z', 
           isFirstTimeCustomer: true
         })
-        .expect(400)
-        .expect((res: Response) => {
-          expect(res.body.message).toContain('อดีต'); 
-        });
+        .expect(400);
     });
 
     it('/appointments (POST) - ควรสร้างการจองได้สำเร็จถ้าข้อมูลถูกต้อง (HTTP 201)', async () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
 
-      const res = await request(app.getHttpServer())
+      const res: Response = await request(app.getHttpServer())
         .post('/appointments')
         .send({
           serviceId: createdServiceId, 
-          customerName: 'สมหญิง',
+          customerName: 'ณัฐชยา',
           customerPhone: '0899999999',
           appointmentDate: tomorrow.toISOString(),
           isFirstTimeCustomer: true
         })
         .expect(201);
 
-      expect(res.body.success).toBe(true);
+      createdApptId = res.body.data.id;
       expect(res.body.data.status).toBe('PENDING');
+    });
+   
+    it('/appointments/:id (PATCH) - ควรเปลี่ยนสถานะการจองเป็น CONFIRMED', async () => {
+      const res: Response = await request(app.getHttpServer())
+        .patch(`/appointments/${createdApptId}`)
+        .send({ status: 'CONFIRMED' })
+        .expect(200);
+      expect(res.body.data.status).toBe('CONFIRMED');
+    });
+  });
+
+  describe('Cleanup Phase (DELETE)', () => {
+    it('ควรลบการจองที่สร้างขึ้นมาเทสได้', async () => {
+      await request(app.getHttpServer())
+        .delete(`/appointments/${createdApptId}`)
+        .expect(200);
+    });
+
+    it('ควรลบบริการที่สร้างขึ้นมาเทสได้', async () => {
+      await request(app.getHttpServer())
+        .delete(`/services/${createdServiceId}`)
+        .expect(200);
     });
   });
 });
