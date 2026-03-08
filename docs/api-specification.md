@@ -25,7 +25,7 @@
 
 ### 1.1 Get All Services
 
-**Endpoint** `GET /services`
+**Endpoint :** `GET /services`
 
 **Description :** ดึงข้อมูลบริการทั้งหมดในระบบ
 
