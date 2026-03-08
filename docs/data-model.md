@@ -42,7 +42,7 @@ Field|Type|Description|
 ```
 ---
 
-## 2️⃣ Service ServiceCategory Enum
+## 2️⃣ ServiceCategory Enum
 ประเภทของบริการ
 
 
@@ -52,6 +52,7 @@ Value| Description |
 `SKIN_CARE` |บริการดูแลผิวหน้า
 `MASSAGE` |บริการนวด
 `CONSULTATION `|บริการให้คำปรึกษา
+
 **Example :**
 ```json
 { "category": "HAIR_CARE" }
