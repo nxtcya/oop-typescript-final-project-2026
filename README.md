@@ -86,7 +86,19 @@ API ถูกออกแบบตามหลัก RESTful API และใช
 │   └── jest-e2e.json
 └── tsconfig.json
 ```
+**โครงสร้างหลักของโปรเจค :**
 
++ src/service จัดการข้อมูลบริการ
+
++ src/appointment จัดการข้อมูลการนัดหมาย
+
++ src/models เก็บ interface และ enum
+
++ data/ เก็บข้อมูล JSON
+
++ docs/ เก็บเอกสารของระบบ
+
++ test/ ใช้สำหรับ E2E testing
 
 ---
 
